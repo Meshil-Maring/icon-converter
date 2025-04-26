@@ -74,6 +74,7 @@
         document.getElementById("svgInput").value = "";
 
         let jsx = svg
+          .replace(/<\?xml.*?\?>\s*/g, "")
           .replace(/width="[^"]*"/g, "width={size}")
           .replace(/height="[^"]*"/g, "height={size}")
           .replace(/fill="[^"]*"/g, "fill={fill}")

@@ -26,12 +26,27 @@
         margin-bottom: 1rem;
         margin-right: 1rem;
       }
+      .output-container {
+        position: relative;
+        margin-top: 1rem;
+      }
       pre {
         background: #111827;
         color: #f3f4f6;
         padding: 1rem;
         white-space: pre-wrap;
         overflow-x: auto;
+        min-height: 250px;
+        position: relative;
+      }
+      #copyButton {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #1f2937;
+        padding: 6px 12px;
+        font-size: 14px;
+        display: none;
       }
     </style>
   </head>
@@ -44,24 +59,27 @@
     ></textarea>
     <br />
     <button onclick="convertToJSX()">Convert</button>
-    <button id="copyButton" onclick="copyJSX()" style="display: none">
-      Copy Output
-    </button>
+    <button onclick="pasteSVG()">Paste</button>
+    <button onclick="clearAll()">Clear All</button>
 
     <h3>JSX Output:</h3>
-    <pre id="jsxOutput">// Output will appear here</pre>
+    <div class="output-container">
+      <pre id="jsxOutput">// Output will appear here</pre>
+      <button id="copyButton" onclick="copyJSX()">Copy</button>
+    </div>
 
     <script>
       function convertToJSX() {
         const svg = document.getElementById("svgInput").value;
+        document.getElementById("svgInput").value = "";
 
         let jsx = svg
-          .replace(/width="[^"]*"/, "width={size}")
-          .replace(/height="[^"]*"/, "height={size}")
-          .replace(/fill="[^"]*"/, "fill={fill}")
-          .replace(/stroke="[^"]*"/, "stroke={stroke}")
-          .replace(/stroke-width="[^"]*"/, "strokeWidth={strokeWidth}")
-          .replace(/strokeWidth="[^"]*"/, "strokeWidth={strokeWidth}")
+          .replace(/width="[^"]*"/g, "width={size}")
+          .replace(/height="[^"]*"/g, "height={size}")
+          .replace(/fill="[^"]*"/g, "fill={fill}")
+          .replace(/stroke="[^"]*"/g, "stroke={stroke}")
+          .replace(/stroke-width="[^"]*"/g, "strokeWidth={strokeWidth}")
+          .replace(/strokeWidth="[^"]*"/g, "strokeWidth={strokeWidth}")
           .replace(/class=/g, "className=")
           .replace(/([a-zA-Z-]+)=/g, (match, p1) => {
             const camelCased = p1.replace(/-([a-z])/g, (_, c) =>
@@ -96,10 +114,29 @@ const Icon = ({
       function copyJSX() {
         const text = document.getElementById("jsxOutput").textContent;
         navigator.clipboard.writeText(text).then(() => {
-          document.getElementById("copyButton").innerText = "Copied!";
-          document.getElementById("copyButton").style.backgroundColor =
-            "#4ade80"; // green color
+          const copyBtn = document.getElementById("copyButton");
+          copyBtn.innerText = "Copied!";
+          copyBtn.style.backgroundColor = "#4ade80"; // green
+          setTimeout(() => {
+            copyBtn.innerText = "Copy";
+            copyBtn.style.backgroundColor = "#1f2937"; // reset
+          }, 1500);
         });
+      }
+
+      function pasteSVG() {
+        navigator.clipboard.readText().then((text) => {
+          document.getElementById("svgInput").value = text;
+        });
+      }
+
+      function clearAll() {
+        document.getElementById("svgInput").value = "";
+        document.getElementById("jsxOutput").textContent =
+          "// Output will appear here";
+        document.getElementById("copyButton").style.display = "none"; // hide copy button
+        document.getElementById("copyButton").innerText = "Copy";
+        document.getElementById("copyButton").style.backgroundColor = "#1f2937"; // reset
       }
     </script>
   </body>

@@ -79,7 +79,7 @@
           .replace(/height="[^"]*"/g, "height={size}")
           .replace(/fill="[^"]*"/g, "fill={fill}")
           .replace(/stroke="[^"]*"/g, "stroke={stroke}")
-          .replace(/stroke-width="[^"]*"/g, "strokeWidth={strokeWidth}")
+          .replace(/stroke-width="[^"]*"/g, "strokeWidth={strokeW}")
           .replace(/class=/g, "className=")
           .replace(/([a-zA-Z-]+)=/g, (match, p1) => {
             const camelCased = p1.replace(/-([a-z])/g, (_, c) =>
@@ -101,7 +101,7 @@ const Icon = ({
   size = 24,
   fill = "none",
   stroke = "currentColor",
-  strokeWidth = "1.5",
+  strokeW = "1.5",
 }) => (\n  ${jsx
           .split("\n")
           .map((line) => "  " + line)

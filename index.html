@@ -56,11 +56,12 @@
         const svg = document.getElementById("svgInput").value;
 
         let jsx = svg
-          .replace(/width="[^"]*"/, "width={s}")
-          .replace(/height="[^"]*"/, "height={s}")
-          .replace(/fill="[^"]*"/, "fill={c}")
-          .replace(/stroke="[^"]*"/, "stroke={st}")
-          .replace(/stroke-width="[^"]*"/, "strokeWidth={stw}")
+          .replace(/width="[^"]*"/, "width={size}")
+          .replace(/height="[^"]*"/, "height={size}")
+          .replace(/fill="[^"]*"/, "fill={fill}")
+          .replace(/stroke="[^"]*"/, "stroke={stroke}")
+          .replace(/stroke-width="[^"]*"/, "strokeWidth={strokeWidth}")
+          .replace(/strokeWidth="[^"]*"/, "strokeWidth={strokeWidth}")
           .replace(/class=/g, "className=")
           .replace(/([a-zA-Z-]+)=/g, (match, p1) => {
             const camelCased = p1.replace(/-([a-z])/g, (_, c) =>
@@ -79,10 +80,10 @@
 
         const wrapped = `
 const Icon = ({
-  s = 24,
-  c = "none",
-  st = "currentColor",
-  stw = "1.5",
+  size = 24,
+  file = "none",
+  stroke = "currentColor",
+  strokeWidth = "1.5",
 }) => (\n  ${jsx
           .split("\n")
           .map((line) => "  " + line)
@@ -95,7 +96,9 @@ const Icon = ({
       function copyJSX() {
         const text = document.getElementById("jsxOutput").textContent;
         navigator.clipboard.writeText(text).then(() => {
-          alert("JSX copied to clipboard!");
+          document.getElementById("copyButton").innerText = "Copied!";
+          document.getElementById("copyButton").style.backgroundColor =
+            "#4ade80"; // green color
         });
       }
     </script>

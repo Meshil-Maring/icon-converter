@@ -80,7 +80,6 @@
           .replace(/fill="[^"]*"/g, "fill={fill}")
           .replace(/stroke="[^"]*"/g, "stroke={stroke}")
           .replace(/stroke-width="[^"]*"/g, "strokeWidth={strokeWidth}")
-          .replace(/strokeWidth="[^"]*"/g, "strokeWidth={strokeWidth}")
           .replace(/class=/g, "className=")
           .replace(/([a-zA-Z-]+)=/g, (match, p1) => {
             const camelCased = p1.replace(/-([a-z])/g, (_, c) =>
